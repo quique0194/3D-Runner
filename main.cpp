@@ -5,7 +5,8 @@
 
 #include <GL/glut.h>
 #include "Clock.h"
-#include "qu3e/src/q3.h"
+#include "lib/qu3e/src/q3.h"
+#include "Platform.h"
 
 #define ESC_KEY 27
 
@@ -87,32 +88,6 @@ void Demo( )
     // Create the floor
     PlatformObject* road = new Road(200);
     platform.addObject(road);
-
-    q3BodyDef bodyDef;
-    //bodyDef.axis.Set( q3RandomFloat( -1.0f, 1.0f ), q3RandomFloat( -1.0f, 1.0f ), q3RandomFloat( -1.0f, 1.0f ) );
-    //bodyDef.angle = q3PI * q3RandomFloat( -1.0f, 1.0f );
-    q3Body* body = scene.CreateBody( bodyDef );
-
-    q3BoxDef boxDef;
-    boxDef.SetRestitution( 0 );
-    q3Transform tx;
-    q3Identity( tx );
-    boxDef.Set( tx, q3Vec3( 50.0f, 1.0f, 50.0f ) );
-    body->AddBox( boxDef );
-
-    // Create boxes
-    for ( i32 i = 0; i < 10; ++i )
-    {
-        bodyDef.position.Set( (float)rand()/RAND_MAX, 1.2f * (i + 1), -0.0f );
-        //bodyDef.axis.Set( 0.0f, 1.0f, 0.0f );
-        //bodyDef.angle = q3PI * q3RandomFloat( -1.0f, 1.0f );
-        //bodyDef.angularVelocity.Set( 3.0f, 3.0f, 3.0f );
-        //bodyDef.linearVelocity.Set( 2.0f, 0.0f, 0.0f );
-        bodyDef.bodyType = eDynamicBody;
-        body = scene.CreateBody( bodyDef );
-        boxDef.Set( tx, q3Vec3( 1.0f, 1.0f, 1.0f ) );
-        body->AddBox( boxDef );
-    }
 }
 
 namespace Camera

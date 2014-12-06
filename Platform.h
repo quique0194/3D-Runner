@@ -2,6 +2,7 @@
 #define PLATFORM_H
 
 #include <vector>
+using namespace std;
 
 class PlatformObject;
 
@@ -17,6 +18,7 @@ class Platform {
         q3Scene scene;
 };
 
+
 Platform::Platform(double dt): scene(dt) {
     scene.SetIterations( 10 );
     scene.SetAllowSleep( true );
@@ -29,11 +31,11 @@ Platform::~Platform() {
     }
 }
 
-Platform::addObject(PlatformObject* object) {
+void Platform::addObject(PlatformObject* object) {
     objects.push_back(object);
 }
 
-Platform::removeObject(PlatformObject* object) {
+void Platform::removeObject(PlatformObject* object) {
 
 }
 
