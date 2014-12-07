@@ -1,5 +1,5 @@
-#ifndef Gizmo_H
-#define Gizmo_H
+#ifndef GISMO_H
+#define GISMO_H
 
 #include "../lib/qu3e/src/q3.h"
 #include "../PlatformObject.h"

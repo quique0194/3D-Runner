@@ -22,8 +22,8 @@ void Road::display() {
         glColor3f(1, 1, 1);
         glVertex3f(-3, 0, 0);
         glVertex3f(3, 0, 0);
-        glVertex3f(3, -5, 0);
-        glVertex3f(-3, -5, 0);
+        glVertex3f(3, -1, 0);
+        glVertex3f(-3, -1, 0);
     glEnd();
 }
 

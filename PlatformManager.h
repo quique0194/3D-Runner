@@ -3,6 +3,8 @@
 
 #include "./ConfigFile.h"
 #include "PlatformObjects/Road.h"
+#include "PlatformObjects/Gizmo.h"
+#include "PlatformObjects/Teapot.h"
 
 class Platform;
 
@@ -18,7 +20,10 @@ class PlatformManager {
 
 void PlatformManager::manage(Platform* platform) {
 	double dist = config.getDouble("ROAD DISTANCE");
-	platform->addObject(new Road(dist));
+	// platform->addObject(new Road(dist));
+
+	// platform->addObject(new Gizmo());
+	platform->addObject(new Teapot());
 }
 
 #endif

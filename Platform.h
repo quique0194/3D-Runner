@@ -56,6 +56,9 @@ void Platform::display() {
     }
 
     clock.Stop( );
+    for (auto object: objects) {
+        object->display();
+    }
 
     glutSwapBuffers( );
 }
