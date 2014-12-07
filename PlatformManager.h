@@ -2,6 +2,7 @@
 #define PLATFORM_MANAGER
 
 #include "./ConfigFile.h"
+#include "PlatformObjects/Road.h"
 
 class Platform;
 
@@ -10,14 +11,14 @@ class PlatformManager {
 		PlatformManager(string filename): config(filename) {
 			config.proc();
 		}
-		void managePlatform(Platform* platform);
+		void manage(Platform* platform);
 	private:
 		ConfigFile config;
 };
 
-void PlatformManager::managePlatform(Platform* platform) {
+void PlatformManager::manage(Platform* platform) {
 	double dist = config.getDouble("ROAD DISTANCE");
-	platform.addObject(new Road(dist));
+	platform->addObject(new Road(dist));
 }
 
 #endif

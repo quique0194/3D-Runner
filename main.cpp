@@ -3,44 +3,32 @@
 #include <Windows.h>
 #endif
 
+#include <iostream>
+
 #include <GL/glut.h>
 #include "Clock.h"
 #include "lib/qu3e/src/q3.h"
 #include "Platform.h"
-#include "PlatformObjects/Road.h"
+// #include "PlatformManager.h"
 
 #define ESC_KEY 27
 
 const float dt = 1.0f / 60.0f;
 Platform platform(dt);
-bool frameStepping = false;
-bool canStep = false;
-i32 seed = 0;
+// PlatformManager manager("config.txt");
 
-void Demo( )
-{
-    srand( seed++ );
-
-    // Create the floor
-    PlatformObject* road = new Road(200);
-    platform.addObject(road);
-}
-
-namespace Camera
-{
-    float position[ 3 ] = { 0.0f, 5.0f, 20.0f };
+namespace Camera {
+    float position[ 3 ] = { 0.0f, 5.0f, -20.0f };
     float target[ 3 ] = { 0.0f, 0.0f, 0.0f };
 };
 
-namespace Light
-{
+namespace Light {
     float ambient[ 4 ] = { 1.0f, 1.0f, 1.0f, 0.5f };
     float diffuse[ 4 ] = { 0.2f, 0.4f, 0.7f, 1.0f };
     float specular[ 4 ] = { 1.0f, 1.0f, 1.0f, 1.0f };
 }
 
-void Mouse( int button, int state, int x, int y )
-{
+void Mouse( int button, int state, int x, int y ) {
     if ( state == GLUT_DOWN )
         switch(button)
         {
@@ -55,21 +43,13 @@ void Mouse( int button, int state, int x, int y )
         }
 }
 
-void Keyboard(unsigned char key, int x, int y)
-{
+void Keyboard(unsigned char key, int x, int y) {
     const float increment = 0.2f;
 
     switch(key)
     {
     case ESC_KEY:
         exit( 0 );
-        break;
-    case 'f':
-        frameStepping = frameStepping ? false : true;
-        break;
-    case ' ':
-        frameStepping = true;
-        canStep = true;
         break;
     case 'w':
         Camera::position[ 2 ] -= increment;
@@ -95,14 +75,10 @@ void Keyboard(unsigned char key, int x, int y)
         Camera::position[ 1 ] += increment;
         Camera::target[ 1 ] += increment;
         break;
-    case 'r':
-        Demo( );
-        break;
     }
 }
 
-void Reshape( int width, int height )
-{
+void Reshape( int width, int height ) {
     if ( height <= 0 )
         height = 1;
 
@@ -127,8 +103,7 @@ void DisplayFunction( void ) {
     platform.display();
 }
 
-int main( int argc, char** argv )
-{
+int main( int argc, char** argv ) {
     // Starting width / height of the window
     const u32 kWindowWidth = 1000;
     const u32 kWindowHeight = 600;
@@ -146,7 +121,7 @@ int main( int argc, char** argv )
     // Setup the window
     glutInitWindowSize( kWindowWidth, kWindowHeight );
     glutInitWindowPosition( (screenWidth - kWindowWidth) / 2, (screenHeight - kWindowHeight) / 2 );
-    glutCreateWindow( "qu3e Physics by Randy Gaul" );
+    glutCreateWindow( "3D Runner" );
 
     glutDisplayFunc( DisplayFunction );
     glutReshapeFunc( Reshape );
@@ -184,7 +159,8 @@ int main( int argc, char** argv )
     glEnable( GL_LIGHT0 );
     glColorMaterial( GL_FRONT, GL_AMBIENT_AND_DIFFUSE );
 
-    Demo( );
+    // initialize platform
+    // manager.manage(&platform);
 
     glutMainLoop( );
 

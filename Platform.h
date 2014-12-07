@@ -4,7 +4,7 @@
 #include <vector>
 using namespace std;
 
-class PlatformObject;
+#include "./PlatformObject.h"
 
 class Platform {
     public:

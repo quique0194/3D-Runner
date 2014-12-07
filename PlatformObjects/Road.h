@@ -8,7 +8,6 @@ class Road: public PlatformObject {
     public:
         Road(double _distance = 100):
             distance(_distance) {
-
         }
 
         void display();

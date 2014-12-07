@@ -6,7 +6,6 @@
 class PlatformObject {
     public:
         PlatformObject();
-        virtual ~PlatformObject();
         virtual void display() = 0;
         virtual void genBody(q3Scene& scene) = 0;
     protected:
