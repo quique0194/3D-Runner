@@ -1,7 +1,7 @@
 #ifndef ROAD_H
 #define ROAD_H
 
-#include "qu3e/src/q3.h"
+#include "../lib/qu3e/src/q3.h"
 #include "../PlatformObject.h"
 
 class Road: public PlatformObject {
@@ -12,7 +12,7 @@ class Road: public PlatformObject {
         }
 
         void display();
-        void genBody(q3Scene& scene, const q3Transform& tx);
+        void genBody(q3Scene& scene);
 
     private:
         double distance;           // how long is the road
@@ -28,12 +28,14 @@ void Road::display() {
     glEnd();
 }
 
-void Road::genBody(q3Scene& scene, const q3Transform& tx) {
+void Road::genBody(q3Scene& scene) {
     q3BodyDef bodyDef;
-    q3Body* body = scene.CreateBody( bodyDef );
+    body = scene.CreateBody( bodyDef );
 
     q3BoxDef boxDef;
     boxDef.SetRestitution( 0 );
+    q3Transform tx;
+    q3Identity( tx );
     boxDef.Set( tx, q3Vec3( 50.0f, 1.0f, distance ) );
     body->AddBox( boxDef );
 }
