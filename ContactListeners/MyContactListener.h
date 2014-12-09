@@ -9,6 +9,7 @@ using namespace std;
 #include "../PlatformObject.h"
 #include "../Platform.h"
 #include "../PlatformObjects/Player.h"
+#include "../gamesound.h"
 
 class MyContactListener: public q3ContactListener {
 	public: 
@@ -27,12 +28,14 @@ class MyContactListener: public q3ContactListener {
 			}
 			if (obj1->body_type == TYPE_PLAYER) {
 				if (obj2->body_type == TYPE_COIN) {
+					play_hero_sound(HERO_COIND_SOUND);
 					player->score += obj2->value;
 					cout << "SCORE: " << player->score << endl;
 					platform->removeObject(obj2);
 					return;
 				}
 				if (obj2->body_type == TYPE_OBSTACLE) {
+					play_hero_sound(HERO_CRASH_SOUND);
 					player->score += obj2->value;
 					cout << "SCORE: " << player->score << endl;
 					return;	
