@@ -5,6 +5,7 @@
 using namespace std;
 
 #include "./PlatformObject.h"
+#include "./Renderer.h"
 
 class Platform {
     public:
@@ -17,6 +18,7 @@ class Platform {
         void display();
     private:
         double dt;
+        Renderer renderer;
         vector<PlatformObject*> objects;
         q3Scene scene;
         Clock clock;
@@ -36,6 +38,7 @@ Platform::~Platform() {
 }
 
 void Platform::addObject(PlatformObject* object) {
+    object->genBody(scene);
     objects.push_back(object);
 }
 
@@ -60,6 +63,7 @@ void Platform::display() {
         object->display();
     }
 
+    scene.Render( &renderer );
     glutSwapBuffers( );
 }
 

@@ -10,28 +10,30 @@
 #include "lib/qu3e/src/q3.h"
 #include "Platform.h"
 #include "PlatformManager.h"
-#include "lib/Vector3f.h"
+#include "PlatformObjects/Player.h"
 
 #define ESC_KEY 27
+#define SPACEBAR 32
 
 const float dt = 1.0f / 60.0f;
 Platform platform(dt);
 PlatformManager manager("config.txt");
+Player* player;
 
 namespace Camera {
-    Vector3f position(0, 0, -10);
-    Vector3f vision(0, 0, 1); // direction of vision
-    Vector3f target = position + vision;
-    Vector3f up(0, 1, 0);
-    GLfloat angle_x = 0;
-    GLfloat angle_y = 0;
+    q3Vec3 calculateUp(const q3Vec3& view) {
+        return q3Normalize(q3Cross(view, q3Vec3(1, 0, 0)));
+    }
 
     void recalculateCamera(GLfloat aspectRatio) {
+        q3Vec3 target = player->getPosition();
+        target[1] = 0;
+        q3Vec3 position = target + q3Vec3(0, 10, -10),
+        up = calculateUp(target - position);
+
         glMatrixMode(GL_PROJECTION);
         glLoadIdentity();
         gluPerspective(45.0f, aspectRatio, 0.1f, 10000.0f);
-        glRotatef(angle_x, 0, 1, 0);
-        glRotatef(angle_y, 1, 0, 0);
         gluLookAt(
             position[0], position[1], position[2],
             target[0], target[1], target[2],
@@ -51,48 +53,45 @@ void Reshape(int width, int height) {
 }
 
 namespace Light {
-    float ambient[ 4 ] = { 1.0, 1.0, 1.0, 1.0 };
-    float diffuse[ 4 ] = { 1.0, 1.0, 1.0, 1.0 };
-    float specular[ 4 ] = { 1.0, 1.0, 1.0, 1.0 };
+    float ambient[ 4 ] = { 0.2, 0.2, 0.2, 1.0 };
+    float diffuse[ 4 ] = { 0.3, 0.3, 0.3, 1.0 };
+    float specular[ 4 ] = { 0.4, 0.4, 0.4, 1.0 };
 };
 
 void Keyboard(unsigned char key, int x, int y) {
     const float increment = 0.8f;
 
-    switch(key)
-    {
+    switch(key) {
         case ESC_KEY:
             exit(0);
             break;
         case 'w':
-            Camera::position[ 2 ] += increment;
             break;
         case 's':
-            Camera::position[ 2 ] -= increment;
             break;
         case 'a':
-            Camera::position[ 0 ] += increment;
+            player->moveRight();
             break;
         case 'd':
-            Camera::position[ 0 ] -= increment;
+            player->moveLeft();
+            break;
+        case SPACEBAR:
+            player->jump();
             break;
         case 'q':
-            Camera::position[ 1 ] -= increment;
             break;
         case 'e':
-            Camera::position[ 1 ] += increment;
             break;
-        case 'j':
-            Camera::angle_x += 1;
+    }
+}
+
+void KeyboardUp(unsigned char key, int x, int y) {
+    switch(key) {
+        case 'a':
+            player->stopMovingToSides();
             break;
-        case 'l':
-            Camera::angle_x -= 1;
-            break;
-        case 'i':
-            Camera::angle_y += 1;
-            break;
-        case 'k':
-            Camera::angle_y -= 1;
+        case 'd':
+            player->stopMovingToSides();
             break;
     }
 }
@@ -128,6 +127,7 @@ int main(int argc, char** argv) {
     glutIdleFunc(DisplayFunction);
     glutReshapeFunc(Reshape);
     glutKeyboardFunc(Keyboard);
+    glutKeyboardUpFunc(KeyboardUp);
 
     // Setup all the open-gl states we want to use (ones that don't change in the lifetime of the application)
     // Note: These can be changed anywhere, but generally we don't change the back buffer color
@@ -154,13 +154,16 @@ int main(int argc, char** argv) {
         // floats[ i ] = (float)position[ i ];
     floats[0] = 0;
     floats[1] = 10;
-    floats[2] = 0;
+    floats[2] = -10;
     floats[3] = 1;
     glLightfv(GL_LIGHT0, GL_POSITION, floats);
     glEnable(GL_LIGHTING);
     glEnable(GL_LIGHT0);
+    glColorMaterial( GL_FRONT, GL_AMBIENT_AND_DIFFUSE );
+    glEnable(GL_COLOR_MATERIAL);
 
-    // initialize platform
+    // initialize player and platform
+    player = manager.getPlayer();
     manager.manage(&platform);
 
     glutMainLoop();
