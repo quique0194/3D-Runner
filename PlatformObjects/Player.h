@@ -4,11 +4,16 @@
 #include <string>
 using namespace std;
 
+#include <GL/glut.h>
+
 #include "./Car.h"
+#include "../constants.h"
 
 class Player: public Car {
 	public:
-		Player(string model, double velocity): Car(model, velocity){
+		Player(string model, double velocity):
+			Car(model, velocity, TYPE_PLAYER),
+			score(0) {
 
 		}
 
@@ -19,6 +24,8 @@ class Player: public Car {
 		void jump();
 		void nitroOn();
 		void nitroOff();
+
+		int score;
 };
 
 q3Vec3 Player::getPosition() {

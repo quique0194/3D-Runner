@@ -33,6 +33,7 @@ void Road::display() {
 void Road::genBody(q3Scene& scene) {
     q3BodyDef bodyDef;
     bodyDef.position = q3Vec3(0, -0.5, distance/2);
+    bodyDef.userData = this;
     body = scene.CreateBody(bodyDef);
 
     q3Transform tx;

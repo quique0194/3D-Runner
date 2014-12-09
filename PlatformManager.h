@@ -7,6 +7,7 @@
 #include "PlatformObjects/Teapot.h"
 #include "PlatformObjects/Building.h"
 #include "PlatformObjects/Car.h"
+#include "PlatformObjects/Coin.h"
 #include "PlatformObjects/Player.h"
 
 class Platform;
@@ -32,6 +33,12 @@ void PlatformManager::manage(Platform* platform) {
 	manageBuildings(platform, dist);
 
 	platform->addObject(new Road(dist));
+
+	platform->addObject(new Coin(-1, 14));
+	platform->addObject(new Coin(-1, 15));
+	platform->addObject(new Coin(-1, 16));
+	platform->addObject(new Coin(-1, 17));
+	platform->addObject(new Coin(-1, 18));
 
 	// platform->addObject(new Car("", 5));
 

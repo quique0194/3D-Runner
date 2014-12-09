@@ -54,6 +54,7 @@ void Building::display() {
 
 void Building::genBody(q3Scene& scene) {
     q3BodyDef bodyDef;
+    bodyDef.userData = this;
     if (side == 0) {	// left
     	bodyDef.position = q3Vec3(-ROAD_WIDTH/2 - x_size/2, y_size/2, z_ini + z_size/2);
     } else {			// right

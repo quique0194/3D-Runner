@@ -4,14 +4,18 @@
 #include <string>
 using namespace std;
 
+#include <GL/glut.h>
+
 #include "../lib/qu3e/src/q3.h"
 #include "../PlatformObject.h"
 #include "../lib/gl_utils.h"
+#include "../constants.h"
 using namespace glutils;
 
 class Car: public PlatformObject {
     public:
-        Car(string _model, double _velocity):
+        Car(string _model, double _velocity, int body_type=TYPE_OBSTACLE):
+            PlatformObject(body_type),
             model(_model),
             velocity(_velocity) {
         }
@@ -20,16 +24,16 @@ class Car: public PlatformObject {
         void genBody(q3Scene& scene);
 
     protected:
-    	string model;
-    	double velocity;
+        string model;
+        double velocity;
 };
 
 void Car::display() {
     glColor3f(1, 1, 1);
     glPushMatrix();
-    	q3Vec3 tx = body->GetTransform().position;
-    	glTranslatef(tx[0], tx[1], tx[2]);
-    	draw_box(1.5, 1, 3);
+        q3Vec3 tx = body->GetTransform().position;
+        glTranslatef(tx[0], tx[1], tx[2]);
+        draw_box(1.5, 1, 3);
     glPopMatrix();
 }
 
@@ -39,6 +43,7 @@ void Car::genBody(q3Scene& scene) {
     bodyDef.bodyType = eDynamicBody;
     bodyDef.linearVelocity = q3Vec3(0, 0, velocity);
     bodyDef.gravityScale = 5;
+    bodyDef.userData = this;
     body = scene.CreateBody(bodyDef);
 
     q3BoxDef boxDef;

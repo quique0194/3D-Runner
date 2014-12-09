@@ -4,9 +4,12 @@
 #include <vector>
 using namespace std;
 
+#include <GL/glut.h>
+
 #include "./PlatformObject.h"
 #include "./Renderer.h"
 #include "./constants.h"
+#include "./Clock.h"
 
 class Platform {
     public:
@@ -15,6 +18,8 @@ class Platform {
 
         void addObject(PlatformObject* object);
         void removeObject(PlatformObject* object);
+
+        void setContactListener(q3ContactListener* listener);
 
         void display();
     private:
@@ -38,13 +43,23 @@ Platform::~Platform() {
     }
 }
 
+void Platform::setContactListener(q3ContactListener* listener) {
+    scene.SetContactListener(listener);
+}
+
 void Platform::addObject(PlatformObject* object) {
     object->genBody(scene);
     objects.push_back(object);
 }
 
 void Platform::removeObject(PlatformObject* object) {
-
+    for (int i = 0; i < objects.size(); ++i) {
+        if (objects[i] == object) {
+            scene.RemoveBody(objects[i]->body);
+            objects.erase(objects.begin()+i);
+            return;
+        }
+    }
 }
 
 void Platform::display() {
@@ -70,6 +85,5 @@ void Platform::display() {
     }
     glutSwapBuffers( );
 }
-
 
 #endif

@@ -11,6 +11,7 @@
 #include "Platform.h"
 #include "PlatformManager.h"
 #include "PlatformObjects/Player.h"
+#include "ContactListeners/MyContactListener.h"
 
 #define ESC_KEY 27
 #define SPACEBAR 32
@@ -19,6 +20,7 @@ const float dt = 1.0f / 60.0f;
 Platform platform(dt);
 PlatformManager manager("config.txt");
 Player* player;
+MyContactListener* contactListener;
 
 namespace Camera {
     q3Vec3 calculateUp(const q3Vec3& view) {
@@ -169,6 +171,8 @@ int main(int argc, char** argv) {
     // initialize player and platform
     player = manager.getPlayer();
     manager.manage(&platform);
+    contactListener = new MyContactListener(&platform, player);
+    platform.setContactListener(contactListener);
 
     glutMainLoop();
 
