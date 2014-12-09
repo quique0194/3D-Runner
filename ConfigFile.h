@@ -21,6 +21,7 @@ class ConfigFile {
                         // was processed properly
 
         double getDouble(string key);
+        vector<double> getDoubles(string key);
 
     private:
         ifstream file;
@@ -43,6 +44,14 @@ bool ConfigFile::proc() {
 
 double ConfigFile::getDouble(string key) {
     return stoi(attrs[key]);
+}
+
+vector<double> ConfigFile::getDoubles(string key) {
+    vector<double> ret;
+    for (auto val: split(attrs[key], ' ')) {
+        ret.push_back(stoi(val));
+    }
+    return ret;
 }
 
 #endif

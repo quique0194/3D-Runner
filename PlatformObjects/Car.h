@@ -14,9 +14,11 @@ using namespace glutils;
 
 class Car: public PlatformObject {
     public:
-        Car(string _model, double _velocity, int body_type=TYPE_OBSTACLE):
-            PlatformObject(body_type),
+        Car(string _model, double _carril, double _z, double _velocity, int body_type=TYPE_OBSTACLE):
+            PlatformObject(body_type, -20),
             model(_model),
+            carril(_carril),
+            z(_z),
             velocity(_velocity) {
         }
 
@@ -25,7 +27,13 @@ class Car: public PlatformObject {
 
     protected:
         string model;
+        double carril;      // -1, 0 or 1
+        double z;
         double velocity;
+
+        virtual int getLayers() {
+            return 0x00000001;
+        }
 };
 
 void Car::display() {
@@ -39,11 +47,15 @@ void Car::display() {
 
 void Car::genBody(q3Scene& scene) {
     q3BodyDef bodyDef;
-    bodyDef.position = q3Vec3(0, 0.5, 2);
+    bodyDef.position = q3Vec3(3*carril*ROAD_WIDTH/8, 0.5, z);
     bodyDef.bodyType = eDynamicBody;
     bodyDef.linearVelocity = q3Vec3(0, 0, velocity);
     bodyDef.gravityScale = 5;
+    bodyDef.lockAxisY = true;
+    bodyDef.lockAxisX = true;
+    bodyDef.lockAxisZ = true;
     bodyDef.userData = this;
+    bodyDef.layers = getLayers();
     body = scene.CreateBody(bodyDef);
 
     q3BoxDef boxDef;
@@ -51,6 +63,7 @@ void Car::genBody(q3Scene& scene) {
     q3Transform tx;
     q3Identity( tx );
     boxDef.Set( tx, q3Vec3(1.5, 1, 3) );
+    boxDef.SetFriction(0);
     body->AddBox( boxDef );
 }
 

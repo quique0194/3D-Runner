@@ -2,7 +2,7 @@
 #define CONSTANTS_H
 
 #define ROAD_WIDTH (8.0)
-#define RENDER_BODIES (true)
+#define RENDER_BODIES (false)
 
 #define TYPE_PLAYER (1)
 #define TYPE_COIN (2)

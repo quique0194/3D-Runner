@@ -38,6 +38,7 @@ void Coin::genBody(q3Scene& scene) {
     bodyDef.bodyType = eDynamicBody;
     bodyDef.gravityScale = 0;
     bodyDef.userData = this;
+    bodyDef.layers = 0x00000002;
     body = scene.CreateBody(bodyDef);
 
     q3BoxDef boxDef;

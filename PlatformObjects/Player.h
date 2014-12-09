@@ -12,7 +12,7 @@ using namespace std;
 class Player: public Car {
 	public:
 		Player(string model, double velocity):
-			Car(model, velocity, TYPE_PLAYER),
+			Car(model, 0, 2, velocity, TYPE_PLAYER),
 			score(0) {
 
 		}
@@ -26,6 +26,10 @@ class Player: public Car {
 		void nitroOff();
 
 		int score;
+	private:
+		int getLayers() {
+			return 0x00000003;
+		}
 };
 
 q3Vec3 Player::getPosition() {
@@ -35,13 +39,13 @@ q3Vec3 Player::getPosition() {
 void Player::moveRight() {
 	q3Vec3 vel = body->GetLinearVelocity();
 	vel[0] = 0;
-	body->SetLinearVelocity(vel + q3Vec3(5, 0, 0));
+	body->SetLinearVelocity(vel + q3Vec3(15, 0, 0));
 }
 
 void Player::moveLeft() {
 	q3Vec3 vel = body->GetLinearVelocity();
 	vel[0] = 0;
-	body->SetLinearVelocity(vel + q3Vec3(-5, 0, 0));
+	body->SetLinearVelocity(vel + q3Vec3(-15, 0, 0));
 }
 
 void Player::stopMovingToSides() {
@@ -51,8 +55,11 @@ void Player::stopMovingToSides() {
 }
 
 void Player::jump() {
-	q3Vec3 vel = body->GetLinearVelocity();
-	body->SetLinearVelocity(vel + q3Vec3(0, 10, 0));
+	q3Vec3 tx = body->GetTransform().position;
+	if (tx[1] < 1) {
+		q3Vec3 vel = body->GetLinearVelocity();
+		body->SetLinearVelocity(vel + q3Vec3(0, 17, 0));
+	}
 }
 
 void Player::nitroOn() {

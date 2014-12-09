@@ -20,8 +20,8 @@ class MyContactListener: public q3ContactListener {
 		void BeginContact( const q3ContactConstraint *contact ) {
 			PlatformObject* obj2 = (PlatformObject*)contact->bodyB->m_userData;
 			PlatformObject* obj1 = (PlatformObject*)contact->bodyA->m_userData;
-			cout << obj1->body_type << endl;
-			cout << obj2->body_type << endl;
+			// cout << obj1->body_type << endl;
+			// cout << obj2->body_type << endl;
 			if (obj2->body_type == TYPE_PLAYER) {
 				swap(obj1, obj2);
 			}
@@ -31,6 +31,11 @@ class MyContactListener: public q3ContactListener {
 					cout << "SCORE: " << player->score << endl;
 					platform->removeObject(obj2);
 					return;
+				}
+				if (obj2->body_type == TYPE_OBSTACLE) {
+					player->score += obj2->value;
+					cout << "SCORE: " << player->score << endl;
+					return;	
 				}
 			}
 		}
