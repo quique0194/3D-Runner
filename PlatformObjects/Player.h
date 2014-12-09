@@ -17,6 +17,8 @@ class Player: public Car {
 		void moveLeft();
 		void stopMovingToSides();
 		void jump();
+		void nitroOn();
+		void nitroOff();
 };
 
 q3Vec3 Player::getPosition() {
@@ -44,6 +46,18 @@ void Player::stopMovingToSides() {
 void Player::jump() {
 	q3Vec3 vel = body->GetLinearVelocity();
 	body->SetLinearVelocity(vel + q3Vec3(0, 10, 0));
+}
+
+void Player::nitroOn() {
+	q3Vec3 vel = body->GetLinearVelocity();
+	vel[2] = 2*velocity;
+	body->SetLinearVelocity(vel);
+}
+
+void Player::nitroOff() {
+	q3Vec3 vel = body->GetLinearVelocity();
+	vel[2] = velocity;
+	body->SetLinearVelocity(vel);
 }
 
 #endif

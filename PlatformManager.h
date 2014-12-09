@@ -22,18 +22,43 @@ class PlatformManager {
 	private:
 		ConfigFile config;
 		Player* player;
+
+		void manageBuildings(Platform* platform, double dist);
 };
 
 void PlatformManager::manage(Platform* platform) {
 	platform->addObject(player);
 	double dist = config.getDouble("ROAD DISTANCE");
+	manageBuildings(platform, dist);
+
 	platform->addObject(new Road(dist));
-	platform->addObject(new Building("A", 0, 0));
-	platform->addObject(new Building("B", 1, 0));
+
 	// platform->addObject(new Car("", 5));
 
 	// platform->addObject(new Gizmo());
 	// platform->addObject(new Teapot());
+}
+
+void PlatformManager::manageBuildings(Platform* platform, double dist) {
+	double z = 0;
+	Building* building;
+	for (int i = 0; z < dist; ++i) {
+		building = new Building("A", 0, z);
+		platform->addObject(building);
+		z += building->getZSize();
+		building = new Building("B", 0, z);
+		platform->addObject(building);
+		z += building->getZSize();
+	}
+	z = 0;
+	for (int i = 0; z < dist; ++i) {
+		building = new Building("A", 1, z);
+		platform->addObject(building);
+		z += building->getZSize();
+		building = new Building("B", 1, z);
+		platform->addObject(building);
+		z += building->getZSize();
+	}
 }
 
 Player* PlatformManager::getPlayer() {

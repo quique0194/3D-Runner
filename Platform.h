@@ -6,6 +6,7 @@ using namespace std;
 
 #include "./PlatformObject.h"
 #include "./Renderer.h"
+#include "./constants.h"
 
 class Platform {
     public:
@@ -63,7 +64,10 @@ void Platform::display() {
         object->display();
     }
 
-    scene.Render( &renderer );
+
+    if (RENDER_BODIES) {
+        scene.Render( &renderer );
+    }
     glutSwapBuffers( );
 }
 

@@ -30,6 +30,7 @@ class Building: public PlatformObject {
 
         void display();
         void genBody(q3Scene& scene);
+        double getZSize();
 
     private:
         string type;
@@ -67,6 +68,10 @@ void Building::genBody(q3Scene& scene) {
     boxDef.Set( tx, q3Vec3(x_size, y_size, z_size) );
     boxDef.SetFriction(0);
     body->AddBox( boxDef );
+}
+
+double Building::getZSize() {
+	return z_size;
 }
 
 #endif

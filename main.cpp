@@ -66,6 +66,7 @@ void Keyboard(unsigned char key, int x, int y) {
             exit(0);
             break;
         case 'w':
+            player->nitroOn();
             break;
         case 's':
             break;
@@ -87,6 +88,9 @@ void Keyboard(unsigned char key, int x, int y) {
 
 void KeyboardUp(unsigned char key, int x, int y) {
     switch(key) {
+        case 'w':
+            player->nitroOff();
+            break;
         case 'a':
             player->stopMovingToSides();
             break;

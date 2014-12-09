@@ -33,15 +33,38 @@ void Road::display() {
 void Road::genBody(q3Scene& scene) {
     q3BodyDef bodyDef;
     bodyDef.position = q3Vec3(0, -0.5, distance/2);
-    body = scene.CreateBody( bodyDef );
+    body = scene.CreateBody(bodyDef);
+
+    q3Transform tx;
+    q3Identity(tx);
 
     q3BoxDef boxDef;
-    boxDef.SetRestitution( 0 );
-    q3Transform tx;
-    q3Identity( tx );
-    boxDef.Set( tx, q3Vec3(ROAD_WIDTH, 1, distance) );
+    boxDef.SetRestitution(0);
     boxDef.SetFriction(0);
-    body->AddBox( boxDef );
+    boxDef.Set(tx, q3Vec3(ROAD_WIDTH, 1, distance));
+    body->AddBox(boxDef);
+
+
+    // crear barandales
+    q3Body* baranda;
+
+    bodyDef.position = q3Vec3(ROAD_WIDTH/2, 2.5, distance/2);
+    baranda = scene.CreateBody(bodyDef);
+
+    boxDef.Set(tx, q3Vec3(0.1, 5, distance));
+    baranda->AddBox(boxDef);
+
+    bodyDef.position = q3Vec3(-ROAD_WIDTH/2, 2.5, distance/2);
+    baranda = scene.CreateBody(bodyDef);
+    baranda->AddBox(boxDef);
+
+    // crear tope
+    q3Body* tope;
+    bodyDef.position = q3Vec3(0, 2.5, distance);
+    tope = baranda = scene.CreateBody(bodyDef);
+
+    boxDef.Set(tx, q3Vec3(ROAD_WIDTH, 5, 0.1));
+    tope->AddBox(boxDef);
 }
 
 #endif
