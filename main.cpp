@@ -72,7 +72,7 @@ void Keyboard(unsigned char key, int x, int y) {
         case 's':
             break;
         case 'a':
-   	        play_hero_sound(HERO_BRAKE_SOUND); 
+   	        play_hero_sound(HERO_BRAKE_SOUND); //sonido, solo hay q llamar a la funcion cn el parametro adecuando, el cual esta definico el gamesound.h
             player->moveRight();
             break;
         case 'd':
@@ -80,6 +80,7 @@ void Keyboard(unsigned char key, int x, int y) {
             player->moveLeft();
             break;
         case SPACEBAR:
+  	        play_hero_sound(HERO_JUMP_SOUND); 
             player->jump();
             break;
         case 'q':
