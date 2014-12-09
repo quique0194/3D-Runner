@@ -76,7 +76,7 @@ void Keyboard(unsigned char key, int x, int y) {
             player->moveRight();
             break;
         case 'd':
-   	        play_hero_sound(HERO_BRAKE_SOUND); 
+        	        play_hero_sound(HERO_BRAKE_SOUND); 
             player->moveLeft();
             break;
         case SPACEBAR:
